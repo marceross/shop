@@ -1,16 +1,24 @@
-<?
+<?php
 	session_start();	
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/shop-plantilla.dwt" codeOutsideHTMLIsLocked="false" -->
-<?
+<?php
 include("conex.php");
-$categorias=mysql_query("SELECT * FROM categorias WHERE activa='S' AND cod_padre=0",$link);
+
+
+
+$categorias =mysqli_query($mysqli,"SELECT * FROM categorias WHERE activa='S' AND cod_padre=0");
+
+
+
+
+
 if(isset($_GET['cod_cat']))
 {
 	$_SESSION['pcategoria']="SI";
 	//Determinamos si la categoria es padre o no
-	$categorias_padre=mysql_query("SELECT * FROM categorias WHERE cod=".$_GET['cod_cat'],$link);
-    $categoria_padre=mysql_fetch_array($categorias_padre);
+$categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" . $_GET['cod_cat']);
+    $categoria_padre = mysqli_fetch_array($categorias_padre);
     if($categoria_padre['cod_padre']==0)
     {
 		$_SESSION['cat_padre_activa']=$_GET['cod_cat'];
@@ -26,35 +34,15 @@ if(isset($_GET['cod_cat']))
 <META NAME="Robots" CONTENT="All">
 <script>
 
-function awmShowMenu(x,y,z,v){} 
+//function awmShowMenu(x,y,z,v){} 
+//document.oncontextmenu = rightclickmenu; 
 
-document.oncontextmenu = rightclickmenu; 
+//function rightclickmenu(e) {if (document.all) {awmShowMenu('rightCLICK',event.clientX+document.body.scrollLeft,event.clientY+document.body.scrollTop); return false;} 
 
-function rightclickmenu(e) {if (document.all) {awmShowMenu('rightCLICK',event.clientX+document.body.scrollLeft,event.clientY+document.body.scrollTop); return false;} 
+//if (navigator.userAgent.indexOf('Gecko')>-1) {awmShowMenu('rightCLICK',e.pageX,e.pageY); return false;}} 
 
-if (navigator.userAgent.indexOf('Gecko')>-1) {awmShowMenu('rightCLICK',e.pageX,e.pageY); return false;}} 
-// End -->
 
-<!-- Begin
-/*function right(e) {
-if (navigator.appName == 'Netscape' && 
-(e.which == 3 || e.which == 2))
-return false;
-else if (navigator.appName == 'Microsoft Internet Explorer' && 
-(event.button == 2 || event.button == 3)) {
-//alert("SOLO BOTON IZQUIERDO");
-return false;
-}
-return true;
-}
 
-document.onmousedown=right;
-document.onmouseup=right;
-if (document.layers) window.captureEvents(Event.MOUSEDOWN);
-if (document.layers) window.captureEvents(Event.MOUSEUP);
-window.onmousedown=right;
-window.onmouseup=right;
-//  End -->*/
 </script>
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>GRAVITAL BOARD HOUSE</title>
@@ -82,44 +70,46 @@ window.onmouseup=right;
           <tr> 
             <td height="20" valign="top"><strong><font color="#000000" size="3" face="Verdana, Arial, Helvetica, sans-serif">Productos</font></strong></td>
           </tr>
-          <?
-	while($categoria=mysql_fetch_array($categorias))
+          <?php
+	while($categoria=mysqli_fetch_array($categorias))
 	{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+              <?php
                 echo $categoria['nombre'];
                 ?>
                 </font></strong></a></p></td>
-            <?
+            <?php
                 if($_SESSION['pcategoria']=="SI")
                 {
                 	if($categoria['cod']==$_SESSION['cat_padre_activa'])
                     {
-                		$subcategorias=mysql_query("SELECT * FROM categorias WHERE cod_padre=".$_SESSION['cat_padre_activa']." AND activa='S'",$link);
-                		while($subcategoria=mysql_fetch_array($subcategorias))
+                        
+                        $subcategorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod_padre=" . $_SESSION['cat_padre_activa'] . " AND activa='S'");
+                        
+                		while($subcategoria=mysqli_fetch_array($subcategorias))
                 		{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+                <?php
                             echo $subcategoria['nombre'];
     ?>
                 </font></strong></a></p></td>
           </tr>
-          <?
+          <?php
          				}
                  	  }
                    }
 	}
-	mysql_data_seek($categorias,0);
+	mysqli_data_seek($categorias,0);
 	
 ?>
         </table></td>
       <td width="601" valign="top"><!-- InstanceBeginEditable name="EditRegion3" -->
-<?	
-	$cantidad=mysql_num_rows($categorias);
+<?php	
+	$cantidad=mysqli_num_rows($categorias);
 	if(!isset($_SESSION['nro_pagina']) or isset($_GET['cod_cat']))
 	{
 		if(!isset($_GET['v']))
@@ -137,7 +127,7 @@ window.onmouseup=right;
 	}*/
 	if(isset($_GET['accion']) or isset($_GET['v']) or isset($_GET['pag']))
 	{
-		$productos=mysql_query($_SESSION['consulta_guardada'],$link);
+		$productos=mysqli_query($mysqli,$_SESSION['consulta_guardada']);
 		/*if($_GET['accion']==1)
 		{
 			if($_SESSION['productos_mostrados']>6)
@@ -166,7 +156,10 @@ window.onmouseup=right;
 		//20 mas buscados
 		if(isset($_GET['ranking']))
 		{
-			$productos=mysql_query("SELECT productos.cod as cod, foto, costo, margen, productos.nombre as nombre, cod_cat FROM productos,categorias WHERE foto IS NOT NULL AND foto<>'' AND cod_cat=categorias.cod ORDER BY clicks DESC LIMIT 20",$link);
+			$productos=mysqli_query($mysqli,"SELECT productos.cod as cod, foto, costo, margen, productos.nombre as nombre, cod_cat FROM productos,categorias WHERE foto IS NOT NULL AND foto<>'' AND cod_cat=categorias.cod ORDER BY clicks DESC LIMIT 20");
+			
+			
+			
 			$_SESSION['consulta_guardada']="SELECT productos.cod as cod, foto, costo, margen, productos.nombre as nombre, cod_cat FROM productos,categorias WHERE foto IS NOT NULL AND foto<>'' AND cod_cat=categorias.cod ORDER BY clicks DESC LIMIT 20";
 			$_SESSION['nro_pagina']=1;
 		}
@@ -181,16 +174,16 @@ window.onmouseup=right;
 					$_SESSION['productos_mostrados']=0;
 					$cod=$_SESSION['cod']=$_GET['cod_cat'];
 					//Busco los datos de la categoria seleccionada
-					$categorias_seleccionadas=mysql_query("SELECT * FROM categorias WHERE cod='$cod'",$link);
-					$categoria_seleccionada=mysql_fetch_array($categorias_seleccionadas);
+					$categorias_seleccionadas=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod'");
+					$categoria_seleccionada=mysqli_fetch_array($categorias_seleccionadas);
 					if($categoria_seleccionada['cod_padre']==0)
 					{
-						$productos=mysql_query("SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod')) LIMIT 60",$link);
+						$productos=mysqli_query($mysqli,"SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod')) LIMIT 60");
 						$_SESSION['consulta_guardada']="SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod')) LIMIT 60";
 					}
 					else
 					{
-						$productos=mysql_query("SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod'))",$link);
+						$productos=mysqli_query($mysqli,"SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod'))");
 						$_SESSION['consulta_guardada']="SELECT * FROM productos WHERE foto<>'' AND (cod_cat='$cod' OR cod_cat IN(SELECT cod FROM categorias WHERE cod_padre='$cod'))";
 					}
 				}
@@ -200,7 +193,7 @@ window.onmouseup=right;
 					//Busqueda por marca
 					$_SESSION['pcategoria']="NO";
 					$cod_marca=$_GET['marca'];
-					$productos=mysql_query("SELECT productos.cod as cod, cod_cat, foto FROM productos, categorias WHERE categorias.cod=cod_cat AND id_marca='$cod_marca' AND activa='S' AND (foto IS NOT NULL AND foto<>'')",$link);
+					$productos=mysqli_query($mysqli,"SELECT productos.cod as cod, cod_cat, foto FROM productos, categorias WHERE categorias.cod=cod_cat AND id_marca='$cod_marca' AND activa='S' AND (foto IS NOT NULL AND foto<>'')");
 					
 					$_SESSION['consulta_guardada']="SELECT productos.cod as cod, cod_cat,foto FROM productos, categorias WHERE categorias.cod=cod_cat AND id_marca='$cod_marca' AND activa='S' AND (foto IS NOT NULL AND foto<>'')";
 				}
@@ -249,7 +242,7 @@ window.onmouseup=right;
 							$condiciones=$condiciones."categorias.nombre LIKE '%".$palabras[$i]."%' OR productos.nombre LIKE '%".$palabras[$i]."%' OR productos.descripcion LIKE '%".$palabras[$i]."%' OR marcas.nombre LIKE '%".$palabras[$i]."%'";
 						}
 					}		
-					$productos=mysql_query("SELECT productos.cod as cod, categorias.cod as cod_cat, foto FROM productos, categorias, marcas WHERE (foto IS NOT NULL AND foto<>'') AND (activa='S' AND productos.id_marca=marcas.id_marca AND productos.cod_cat=categorias.cod) AND (".$condiciones.")",$link);				
+					$productos=mysqli_query($mysqli,"SELECT productos.cod as cod, categorias.cod as cod_cat, foto FROM productos, categorias, marcas WHERE (foto IS NOT NULL AND foto<>'') AND (activa='S' AND productos.id_marca=marcas.id_marca AND productos.cod_cat=categorias.cod) AND (".$condiciones.")");				
 					$_SESSION['consulta_guardada']="SELECT productos.cod as cod, categorias.cod as cod_cat, foto FROM productos, categorias, marcas WHERE (foto IS NOT NULL AND foto<>'') AND (activa='S' AND productos.id_marca=marcas.id_marca AND productos.cod_cat=categorias.cod) AND (".$condiciones.")";
 				}	
 				else
@@ -259,7 +252,7 @@ window.onmouseup=right;
 			}
 		}
 }
-	$cantidad_productos=mysql_num_rows($productos);		
+	$cantidad_productos=mysqli_num_rows($productos);		
 	if($cantidad_productos>0)
 	{
 		$resto=$cantidad_productos%6;	
@@ -288,7 +281,7 @@ window.onmouseup=right;
 				}
 			}
 		}	
-		mysql_data_seek($productos,(($_SESSION['nro_pagina']*6)-6));	
+		mysqli_data_seek($productos,(($_SESSION['nro_pagina']*6)-6));	
 		//mysql_data_seek($productos,5);	
 	}		
 ?>      
@@ -298,50 +291,50 @@ window.onmouseup=right;
             <td width="419" height="31" valign="top"><strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop.php">inicio</a></font></strong></td>
           </tr>
      </table>
-<?
+<?php
 	if($cantidad_productos>0)
 	{
 ?>                
      <table width="577" border="0" cellpadding="0" cellspacing="0">
           <!--DWLayoutTable-->
           <tr> 
-            <?
+           <?php
 	//$mostrados=0;	
 	for($mostrados=0;$mostrados<3;$mostrados++)
 	//while($producto=mysql_fetch_array($productos) and $mostrados<3)
 	{
-		if($producto=mysql_fetch_array($productos))
+		if($producto=mysqli_fetch_array($productos))
 		{
 			//Esta cuenta la cantidad de productos mostrados POR PAGINA
 			//$mostrados++;	
 			//Esta variable contabiliza el total de productos mostrados EN TOTAL
 			//$_SESSION['productos_mostrados']=$_SESSION['productos_mostrados']+1;
 ?>
-            	<td><a href="shop_detalle.php?cod=<? echo $producto['cod'];?>&cod_cat=<? echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<? echo $producto['foto'];?>" /></a></td>        
-<?
+            	<td><a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<?php echo $producto['foto'];?>" /></a></td>        
+<?php
 		}
 	}	
 ?>
           </tr>
           <tr> 
-<?
+<?php
 	//if($_SESSION['productos_mostrados']<$cantidad_productos)
 	//{		
 		//mysql_data_seek($productos,(($_SESSION['nro_pagina']*6)-6)+3);
-		while($producto=mysql_fetch_array($productos) and $mostrados<6)
+		while($producto=mysqli_fetch_array($productos) and $mostrados<6)
 		{
 			$mostrados++;			
 			//$_SESSION['productos_mostrados']=$_SESSION['productos_mostrados']+1;
 ?>
-            <td><a href="shop_detalle.php?cod=<? echo $producto['cod'];?>&cod_cat=<? echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<? echo $producto['foto'];?>" /></a></td>
-<?
+            <td><a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<?php echo $producto['foto'];?>" /></a></td>
+<?php
 		}	
 	//}	
 ?>
           </tr>
           <tr>
             <td>
-              <div align="left">
+              <div align="left" style="margin-top:20px;margin-bottom:20px;">
                 <table width="179" border="0" cellspacing="0">
                   <tr>
                     <td width="22"><center>
@@ -349,16 +342,50 @@ window.onmouseup=right;
                     </center>                    </td>
                     <td width="131"><center>
                       <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-<?
+<?php
 	for($h=1;$h<=$cantidad_paginas;$h++)
 	{
+	    
+	    if(isset($_GET['pag'])){
+	        $pag_id = $_GET['pag'];
+	    }else{
+	        $pag_id = '';
+	        
+	        
+	        
+	    }
+	    
+	    if($h ==  $pag_id){
+	        $style='text-decoration:none;background: green;
+    color: #fff;
+    padding: 5px;
+    margin: 5px;';
+	    }else{
+	        $style='text-decoration:none;background: blue;
+    color: #fff;
+    padding: 5px;
+    margin: 5px;';
+	    }
+	    
+	    if(isset($_GET['pag'])){
+	        
+	    }else{
+	        if($h == 1){
+	            $style='text-decoration:none;background: green;
+    color: #fff;
+    padding: 5px;
+    margin: 5px;';
+	        }
+	    }
+	    
+	    
 		if($h<>$cantidad_paginas)
 		{
-			echo "<a style=text-decoration:none href=shop_productos.php?cod_cat=".$_SESSION['cod']."&pag=".$h.">".$h."-</a>";
+			echo "<a style= '$style' href=shop_productos.php?cod_cat=".$_SESSION['cod']."&pag=".$h.">".$h."</a>";
 		}
 		else
 		{
-			echo "<a style=text-decoration:none href=shop_productos.php?cod_cat=".$_SESSION['cod']."&pag=".$h.">".$h."</a>";
+			echo "<a style='$style' href=shop_productos.php?cod_cat=".$_SESSION['cod']."&pag=".$h.">".$h."</a>";
 		}
 	}
 ?>
@@ -373,14 +400,14 @@ window.onmouseup=right;
           </tr>
         </table>
         <center>
-          <?
+          <?php
 	}
 	else
 	{
 ?>        
           
           <img src="archivos_recibidos/no_disponible.jpg" width="190" height="190">    
-<?
+<?php
 	}
 ?>             
           </center>

@@ -28,7 +28,7 @@ if (isset($_GET['cod_cat'])) {
   <table width="930" height="600" border="0" align="center">
     <tr> 
       <td height="104" colspan="3">
-        <img src="../banner_shop4.gif" width="920" height="150" border="0" usemap="#Map2">
+        <img src="../shop/banner_shop4.gif" width="920" height="150" border="0" usemap="#Map2">
       </td>
     </tr>
     <tr> 
@@ -84,7 +84,7 @@ if (isset($_GET['cod_cat'])) {
         <br>
         <table width="90%" border="0" align="left">
           <tr>
-            <td><a href="undiadewake.php"><img src="undiadewake2.gif" width="128" height="66" border="0"></a></td>
+            <td><a href="../shop/undiadewake.php"><img src="../shop/undiadewake2.gif" width="128" height="66" border="0"></a></td>
           </tr>
         </table>
       </td>
@@ -138,13 +138,13 @@ if (isset($_GET['cod_cat'])) {
         </tr>
       </table>
       </td>
-      <td width="172" valign="top"><img src="../marcas.gif" width="169" height="377" border="0" usemap="#Map" /></td>
+      <td width="172" valign="top"><img src="../shop/marcas.gif" width="169" height="377" border="0" usemap="#Map" /></td>
     </tr>
     <tr> 
-      <td height="32" colspan="3" background="../fondopie2.png">
+      <td height="32" colspan="3" background="../shop/fondopie2.png">
         <div align="center">
           <font size="1" face="Verdana, Arial, Helvetica, sans-serif"><strong>
-            GRAVITAL BOARD HOUSE Â© | Rafael NuÃ±ez 3491 | Cerro de las Rosas | Cordoba | Argentina<br>
+            GRAVITAL BOARD HOUSE © | Rafael Nuñez 3491 | Cerro de las Rosas | Cordoba | Argentina<br>
             0351-5988630 | gravital@boardhouse.com.ar
           </strong></font>
         </div>

@@ -1,16 +1,17 @@
-<?	
+<?php	
 	session_start();
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/shop-plantilla.dwt" codeOutsideHTMLIsLocked="false" -->
-<?
+<?php
 include("conex.php");
-$categorias=mysql_query("SELECT * FROM categorias WHERE activa='S' AND cod_padre=0",$link);
+$categorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE activa='S' AND cod_padre=0");
+
 if(isset($_GET['cod_cat']))
 {
 	$_SESSION['pcategoria']="SI";
 	//Determinamos si la categoria es padre o no
-	$categorias_padre=mysql_query("SELECT * FROM categorias WHERE cod=".$_GET['cod_cat'],$link);
-    $categoria_padre=mysql_fetch_array($categorias_padre);
+	$categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" . $_GET['cod_cat']);
+    $categoria_padre=mysqli_fetch_array($categorias_padre);
     if($categoria_padre['cod_padre']==0)
     {
 		$_SESSION['cat_padre_activa']=$_GET['cod_cat'];
@@ -58,11 +59,6 @@ window.onmouseup=right;
 </script>
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>GRAVITAL BOARD HOUSE</title>
-<script type="text/javascript" src="js/ventana-modal-1.1.1.js"></script>
-<script type="text/javascript" src="js/abrir-ventana-variable.js"></script>
-<script type="text/javascript" src="js/abrir-ventana-fija.js"></script>
-<link href="css/ventana-modal.css" rel="stylesheet" type="text/css">
-<link href="css/style.css" rel="stylesheet" type="text/css">
 <!-- InstanceEndEditable -->
 <!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
 </head>
@@ -87,126 +83,105 @@ window.onmouseup=right;
           <tr> 
             <td height="20" valign="top"><strong><font color="#000000" size="3" face="Verdana, Arial, Helvetica, sans-serif">Productos</font></strong></td>
           </tr>
-          <?
-	while($categoria=mysql_fetch_array($categorias))
+          <?php
+	while($categoria=mysqli_fetch_array($categorias))
 	{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+                <?php
                 echo $categoria['nombre'];
                 ?>
                 </font></strong></a></p></td>
-            <?
+            <?php
                 if($_SESSION['pcategoria']=="SI")
                 {
                 	if($categoria['cod']==$_SESSION['cat_padre_activa'])
                     {
-                		$subcategorias=mysql_query("SELECT * FROM categorias WHERE cod_padre=".$_SESSION['cat_padre_activa']." AND activa='S'",$link);
-                		while($subcategoria=mysql_fetch_array($subcategorias))
+                		
+                		$subcategorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod_padre=" . $_SESSION['cat_padre_activa'] . " AND activa='S'");
+                		while($subcategoria=mysqli_fetch_array($subcategorias))
                 		{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+                <?php
                             echo $subcategoria['nombre'];
     ?>
                 </font></strong></a></p></td>
           </tr>
-          <?
+          <?php
          				}
                  	  }
                    }
 	}
-	mysql_data_seek($categorias,0);
+	mysqli_data_seek($categorias,0);
 	
 ?>
         </table></td>
       <td width="601" valign="top"><!-- InstanceBeginEditable name="EditRegion3" -->
-<?	
+<?php	
 	$cod=$_GET['cod'];
 	//Contabilizamos el click
-	mysql_query("UPDATE productos SET clicks=clicks+1 WHERE cod='$cod'",$link);
+	mysqli_query($mysqli,"UPDATE productos SET clicks=clicks+1 WHERE cod='$cod'");
 	//$cod_cat=$_GET['cod_cat'];
-	$productos=mysql_query("SELECT cod, productos.nombre as nombre, marcas.nombre as marca, logo, descripcion, costo, foto, stock, cod_cat,marcas.id_marca as id_marca FROM productos,marcas WHERE marcas.id_marca=productos.id_marca AND cod='$cod'",$link);
-	$producto=mysql_fetch_array($productos);	
+	$productos=mysqli_query($mysqli,"SELECT cod, productos.nombre as nombre, marcas.nombre as marca, logo, descripcion, costo, foto, stock, cod_cat,marcas.id_marca as id_marca FROM productos,marcas WHERE marcas.id_marca=productos.id_marca AND cod='$cod'");
+	$producto=mysqli_fetch_array($productos);	
 	$cod_cat=$producto['cod_cat'];
-	$categorias2=mysql_query("SELECT * FROM categorias WHERE cod='$cod_cat'",$link);
-	$categoria_activa=mysql_fetch_array($categorias2);
-	$imagenes=mysql_query("SELECT * FROM productos_imagenes WHERE cod='$cod'",$link);
+	$categorias2=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod_cat'");
+	$categoria_activa=mysqli_fetch_array($categorias2);
+	$imagenes=mysqli_query($mysqli,"SELECT * FROM productos_imagenes WHERE cod='$cod'");
 ?>      
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <!--DWLayoutTable-->
 		  <tr> 
             <td width="419" height="31" valign="top"><strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop.php">inicio 
-              </a></font></strong><strong><font size="4" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $cod_cat;?>&v=1"> 
-              <? echo "-"." ".$categoria_activa['nombre'];?></a></font></strong><strong><font color="#0000CC" size="5"> 
-              <? echo " "."-"." ".$producto['nombre'];?></font></strong></td>
+              </a></font></strong><strong><font size="4" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $cod_cat;?>&v=1"> 
+              <?php echo "-"." ".$categoria_activa['nombre'];?></a></font></strong><strong><font color="#0000CC" size="5"> 
+              <?php echo " "."-"." ".$producto['nombre'];?></font></strong></td>
           </tr>
         </table><table width="545" border="0" align="center" cellspacing="0">
           <!--DWLayoutTable-->
           <tr> 
-            <td width="190" rowspan="5" valign="top"><img src="<? echo $producto['foto'];?>" alt="" width="190" height="190" /></a></td>
+            <td width="190" rowspan="5" valign="top"><img src="<?php echo $producto['foto'];?>" alt="" width="190" height="190" /></a></td>
             <td width="45" height="21">&nbsp;</td>
             <td width="330" valign="top"><strong><font color="#006600">Producto:</font></strong> 
-              <? echo $producto['nombre'];?> </td>
+              <?php echo $producto['nombre'];?> </td>
             <td width="4"></td>
           </tr>
           <tr> 
             <td height="21">&nbsp;</td>
             <td valign="top"><strong><font color="#006600">Marca:</font></strong> 
-              <? echo $producto['marca'];?> </td>
+              <?php echo $producto['marca'];?> </td>
             <td></td>
           </tr>
           <tr> 
             <td height="21">&nbsp;</td>
             <td valign="top"><strong><font color="#006600">Descripcion:</font></strong> 
-              <? echo $producto['descripcion'];?> </td>
+             <?php echo $producto['descripcion'];?> </td>
             <td></td>
           </tr>
           <tr> 
             <td height="21">&nbsp;</td>
             <td valign="top"><strong><font color="#006600">Precio:</font></strong> 
-              <? echo round($producto['costo']*$categoria_activa['margen']);?> </td>
+              <?php echo round($producto['costo']*$categoria_activa['margen']);?> </td>
             <td></td>
           </tr>
           <tr> 
-            <td height="122">&nbsp;</td>
-            <td><a href="shop_productos.php?marca=<? echo $producto['id_marca'];?>"><img src="<? echo $producto['logo'];?>" alt="" border="0" /></a></td>
+            <td height="108">&nbsp;</td>
+            <td><a href="shop_productos.php?marca=<?php echo $producto['id_marca'];?>"><img src="<?php echo $producto['logo'];?>" alt="" border="0" /></a></td>
             <td></td>
           </tr>
           <tr> 
-            <td height="18"><table width="42" border="0" cellspacing="0">
-              <tr>
-<?
-	while($imagen=mysql_fetch_array($imagenes))
-	{
-?>              
-                <!--<td width="40"><a href="<? echo $imagen['foto'];?>" rel="moodalbox"><img src="<? echo $imagen['foto'];?>" width="40" height="40" border="0"></a></td>-->
-                <td width="40"><span class="texto enlace" onClick="abrirVentanaFija('<? echo $imagen['foto'];?>', 250, 300, 'ventana', '')"><img src="<? echo $imagen['foto'];?>" width="40" height="40" border="0"></span></td>
-<?
-	}
-?>                
-              </tr>
-            </table></td>
+            <td height="18"></td>
             <td></td>
-            <td><div align="left"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><strong>stock:</strong>
-              <?
-			if($producto['stock']>0)
-			{
-			 	echo "Hay Stock";
-			}
-			else
-			{
-				echo "Sin Stock";
-			}
-			?> 
-            </font></div></td>
+            <td><div align="left"><font size="1" face="Verdana, Arial, Helvetica, sans-serif">stock:<?php echo ($producto['stock']);?> 
+                </font></div></td>
             <td></td>
           </tr>
           <tr> 
             <td height="136" colspan="3" valign="top"><div align="center"> 
-                <form name="form2" id="form2" method="post" action="procesa_consulta.php?cod=<? echo $producto['cod'];?>">
+                <form name="form2" id="form2" method="post" action="procesa_consulta.php?cod=<?php echo $producto['cod'];?>">
                   <p> 
                     <textarea name="consulta" cols="50" id="consulta"></textarea>
                     consulta</p>
@@ -224,7 +199,7 @@ window.onmouseup=right;
     </tr>
     <tr> 
       <td height="32" colspan="3" background="fondopie2.png"><div align="center"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><strong>GRAVITAL 
-          BOARD HOUSE ¬Æ | Rafael Nu&ntilde;ez 3491 | Cerro de las Rosas | Cordoba 
+          BOARD HOUSE è¢Ó | Rafael Nu&ntilde;ez 3491 | Cerro de las Rosas | Cordoba 
           | Argentina<br>
           0351-5988630 | gravital@boardhouse.com.ar</strong></font></div></td>
     </tr>

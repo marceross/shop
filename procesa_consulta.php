@@ -1,13 +1,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/shop-plantilla.dwt" codeOutsideHTMLIsLocked="false" -->
-<?
+<?php
+session_start();
 include("conex.php");
-$categorias=mysql_query("SELECT * FROM categorias WHERE activa='S' AND cod_padre=0",$link);
+$categorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE activa='S' AND cod_padre=0");
 if(isset($_GET['cod_cat']))
 {
 	$_SESSION['pcategoria']="SI";
 	//Determinamos si la categoria es padre o no
-	$categorias_padre=mysql_query("SELECT * FROM categorias WHERE cod=".$_GET['cod_cat'],$link);
-    $categoria_padre=mysql_fetch_array($categorias_padre);
+	 $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" . $_GET['cod_cat']);
+    $categoria_padre = mysqli_fetch_array($categorias_padre);
     if($categoria_padre['cod_padre']==0)
     {
 		$_SESSION['cat_padre_activa']=$_GET['cod_cat'];
@@ -32,29 +33,10 @@ function rightclickmenu(e) {if (document.all) {awmShowMenu('rightCLICK',event.cl
 if (navigator.userAgent.indexOf('Gecko')>-1) {awmShowMenu('rightCLICK',e.pageX,e.pageY); return false;}} 
 // End -->
 
-<!-- Begin
-/*function right(e) {
-if (navigator.appName == 'Netscape' && 
-(e.which == 3 || e.which == 2))
-return false;
-else if (navigator.appName == 'Microsoft Internet Explorer' && 
-(event.button == 2 || event.button == 3)) {
-//alert("SOLO BOTON IZQUIERDO");
-return false;
-}
-return true;
-}
 
-document.onmousedown=right;
-document.onmouseup=right;
-if (document.layers) window.captureEvents(Event.MOUSEDOWN);
-if (document.layers) window.captureEvents(Event.MOUSEUP);
-window.onmousedown=right;
-window.onmouseup=right;
-//  End -->*/
 </script>
 <!-- InstanceBeginEditable name="doctitle" -->
-<?
+<?php
 //para armar la lista de categorias
 $cod=$_GET['cod'];
 $consulta=$_POST['consulta'];
@@ -87,62 +69,71 @@ $fecha=strval($array_fecha['year'])."-".strval($array_fecha['mon'])."-".strval($
           <tr> 
             <td height="20" valign="top"><strong><font color="#000000" size="3" face="Verdana, Arial, Helvetica, sans-serif">Productos</font></strong></td>
           </tr>
-          <?
-	while($categoria=mysql_fetch_array($categorias))
+          <?php
+	while($categoria=mysqli_fetch_array($categorias))
 	{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
+                <?php
                 echo $categoria['nombre'];
                 ?>
                 </font></strong></a></p></td>
-            <?
+            <?php
                 if($_SESSION['pcategoria']=="SI")
                 {
                 	if($categoria['cod']==$_SESSION['cat_padre_activa'])
                     {
-                		$subcategorias=mysql_query("SELECT * FROM categorias WHERE cod_padre=".$_SESSION['cat_padre_activa']." AND activa='S'",$link);
-                		while($subcategoria=mysql_fetch_array($subcategorias))
+                		$subcategorias=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod_padre=".$_SESSION['cat_padre_activa']." AND activa='S'");
+                		while($subcategoria=mysqli_fetch_array($subcategorias))
                 		{
 ?>
           <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<? echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-                <?
+            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+                <?php
                             echo $subcategoria['nombre'];
     ?>
                 </font></strong></a></p></td>
           </tr>
-          <?
+          <?php
          				}
                  	  }
                    }
 	}
-	mysql_data_seek($categorias,0);
+	mysqli_data_seek($categorias,0);
 	
 ?>
         </table></td>
       <td width="601" valign="top"><!-- InstanceBeginEditable name="EditRegion3" --> 
         <div align="center"><strong> 
-          <?
+         <?php
 	if($mail=='' or $consulta=='')
 	{
     	echo "ERROR: CAMPO VACIO, VOLVER ATRAS";
 	}
 	else
-{	
+{
+    
+    $find = mysqli_query($mysqli,"SELECT id FROM mails WHERE mail='$mail'");
+    $finds=mysqli_fetch_array($find);
+    
+    if($finds){
+        	echo "Already enquired";
+        	exit();
+    }
+    
 	//Guardamos el mail en la tabla mails
-	if(mysql_query("INSERT INTO mails (mail) VALUES ('$mail')",$link))
+	if(mysqli_query($mysqli,"INSERT INTO mails (mail) VALUES ('$mail')"))
 	{
-		$id_mail=mysql_insert_id($link);
+		$id_mail=mysqli_insert_id($mysqli);
 	}
 	else
 	{
-		$datos=mysql_query("SELECT id FROM mails WHERE mail='$mail'",$link);
-		$dato=mysql_fetch_array($datos);
+		$datos=mysqli_query($mysqli,"SELECT id FROM mails WHERE mail='$mail'");
+		$dato=mysqli_fetch_array($datos);
 		$id_mail=$dato['id'];
 	}
-	mysql_query("INSERT INTO consultas (consulta,id_mail,fecha,cod_producto) VALUES ('$consulta','$id_mail','$fecha','$cod')",$link);
+	mysqli_query($mysqli,"INSERT INTO consultas (consulta,id_mail,fecha,cod_producto) VALUES ('$consulta','$id_mail','$fecha','$cod')");
 	mail($mail,"GRAVITAL CONSULTA","Te responderemos a la brevedad tu consulta:"." ".$consulta,"From:gravital@boardhouse.com.ar");
 	mail("mibanez23@hotmail.com","GRAVITAL CONSULTA",$consulta,"From:".$mail);
 	echo "Gracias por tu consulta, responderemos a tu mail a la brevedad";
