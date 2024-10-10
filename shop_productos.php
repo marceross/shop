@@ -195,7 +195,13 @@ text-align: center;
                     
                     
                 <?php 
-                    $cod=$_GET['cod_cat'];
+                    
+                    
+                    if(isset($_GET['cod_cat'])){
+                        
+                   
+                    
+                    
                     $cate_t=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod'");
                     $cat_title = mysqli_fetch_array($cate_t);
                     
@@ -226,7 +232,7 @@ text-align: center;
               <?php echo $cat_title['nombre'];?></a></font></strong>
                     </div>
                 
-                 
+                 <?php } ?>
                 
                 </div>
              
@@ -511,7 +517,7 @@ text-align: center;
                
                <div class="col-lg-4 col-12 col-sm-6">
                     <div  class="p_list box_layout">
-                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $cod;?>">
                       <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
                     </a>
                     </div>
@@ -529,7 +535,7 @@ text-align: center;
 		?>
                <div class="col-lg-4 col-12 col-sm-6">
                     <div  class="p_list box_layout">
-                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $cod;?>">
                       <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
                     </a>
                     </div>
