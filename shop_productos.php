@@ -1,7 +1,8 @@
 <?php
 	session_start();	
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/shop-plantilla.dwt" codeOutsideHTMLIsLocked="false" -->
+<!DOCTYPE html>
+<html>
 <?php
 include("conex.php");
 
@@ -23,15 +24,25 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
     {
 		$_SESSION['cat_padre_activa']=$_GET['cod_cat'];
     }
+}else if(isset($_POST['criterio'])){
+			
+
+}else{
+    header("Location:shop.php");
+    exit();
 }
 ?>
 <head>
-<link rel="icon" href="http://www.boardhouse.com.ar/4.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="http://www.boardhouse.com.ar/4.ico" type="image/x-icon" />
-<meta http-equiv="" content="text/html; charset=iso-8859-1">
-<META NAME="Description" CONTENT="Casa de Deportes Extremos">
-<META NAME="Keywords" CONTENT="skate,wakeboard,kitesurf,snowboard,longboard,surf,kite,wake,wakeskate,wakesurf,tablas,decks,boards">
-<META NAME="Robots" CONTENT="All">
+<link rel="icon" href="fav.gif" type="image/gif" >
+<meta charset="utf-8">
+<meta name="description" content="GRAVITAL BOARD HOUSE">
+<meta name="keywords" content="GRAVITAL BOARD HOUSE">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+ <script src="css/bootstrap.bundle.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <script src="css/jquery.min.js"></script>
 <script>
 
 //function awmShowMenu(x,y,z,v){} 
@@ -44,71 +55,273 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
 
 
 </script>
-<!-- InstanceBeginEditable name="doctitle" -->
+
 <title>GRAVITAL BOARD HOUSE</title>
-<!-- InstanceEndEditable -->
-<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+
 </head>
-<body link="#0000FF" vlink="#0000FF" alink="#0000FF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<div align="center">
-  <table width="930" height="600" border="0" align="center">
-    <!--DWLayoutTable-->
-    <tr> 
-      <td height="104" colspan="3"><img src="banner_shop4.gif" width="920" height="150" border="0" usemap="#Map2"></td>
-    </tr>
-    <tr> 
-      <td width="143" height="416" valign="top"><table width="143" border="0" cellpadding="0" cellspacing="0">
-          <!--DWLayoutTable-->
-          <tr> 
-            <td width="143" height="24" valign="top"><form name="form1" method="post" action="shop_productos.php">
-                <label> 
-                <input name="criterio" type="text" id="textfield" size="8" maxlength="20">
-                </label>
-                <input type="submit" name="Submit2" value="buscar">
-              </form></td>
-          </tr>
-          <tr> 
-            <td height="20" valign="top"><strong><font color="#000000" size="3" face="Verdana, Arial, Helvetica, sans-serif">Productos</font></strong></td>
-          </tr>
-          <?php
-	while($categoria=mysqli_fetch_array($categorias))
-	{
-?>
-          <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $categoria['cod'];?>"><strong><font color="#666666" size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-              <?php
-                echo $categoria['nombre'];
+<body>
+    
+  <style>
+    
+     @media screen and (max-width: 767px) {
+            
+           
+            
+            
+        }
+    
+     @media screen and (min-width: 992px) {
+        .container{
+                max-width:930px!important;margin:0 auto;
+            }
+            
+            
+    }
+    
+    @media screen and (max-width: 991px) {
+        .p_list img{
+                width:200px;
+                height:200px;
+            }
+            .container{
+                max-width:100%!important;margin:0 auto;
+            }
+    }
+    @media screen and (min-width: 576px) {
+        .p_list img{
+                width:200px;
+                height:200px;
+            }
+            
+    }
+    
+   
+    
+        
+        
+        
+        
+        
+        .category_layout{
+                 box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+                margin-bottom: 15px;
+                margin-top: 15px;
+                padding:10px;
+                border-radius: 7px;
+            }
+            
+            
+        
+        
+        .box_layout{
+             box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+text-align: center;
+    margin-bottom: 15px;
+     border-radius: 7px;
+        }
+        
+        .box_layout:hover {
+   
+}
+
+ @media screen and (max-width: 330px) {
+             .search_field{
+                 width:50%!important;
+             }
+         }
+         
+         #slide_toogle ul li{
+             list-style:none;
+             width: 100%;
+         }
+          #slide_toogle ul{
+                  margin-bottom: 0.5rem!important;
+                   width: 100%;
+          }
+        .category_layout ul li{list-style:none;display: inline-block;}
+    </style>
+    
+    <div class="container" >
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <img src="../shop/banner_shop4.gif"  usemap="#Map2" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        
+        
+         <div class="row" style="min-height:50px;">
+             <div class="col-lg-12  col-sm-12">
+                 
+                
+             
+             <div class="category_layout">
+             
+             <div class="row" >
+                <div class="col-lg-8 col-sm-8 col-8">
+                    <ul>
+                        
+                        
+                        <li><h4>Productos</h4></li>
+                        <li><p style="margin-bottom:0px!important;padding-left: 20px;"><strong><a class="btn btn-info btn-sm" style="text-decoration:none;color:#fff" href="shop.php">inicio</a></strong></p>
+</li>
+                    </ul>
+                    
+                    
+
+                </div>
+                <div class="col-lg-4 col-sm-4 col-4" style="text-align:end;">
+                    
+                    
+                                
+                                <a style="cursor:pointer;font-size:20px;color:#0d6efd;font-weight:bold;" class="slide_down_tag">
+                    
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    
+
+
+                </a>
+                
+                <a style="cursor:pointer;font-size:20px;color:red;font-weight:bold;display:none;" class="slide_up_tag" >
+                    
+                   
+                    <i class="fa fa-times" aria-hidden="true"></i>
+
+
+                </a>
+                                </div>
+                    
+                    
+                <?php 
+                    $cod=$_GET['cod_cat'];
+                    $cate_t=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod'");
+                    $cat_title = mysqli_fetch_array($cate_t);
+                    
+                    $c_p = $cat_title['cod_padre'];
+                    
+                    if($c_p !=0){
+                    
+                    $cate_m=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$c_p'");
+                    
+                    //echo "SELECT * FROM categorias WHERE cod='$c_p'";
+                    
+                    $cat_mtitle = mysqli_fetch_array($cate_m);
+                    $p_cat = $cat_mtitle['nombre'];
+                        
+                    }else{
+                        $p_cat = '';
+                    }
+                    
                 ?>
-                </font></strong></a></p></td>
-            <?php
-                if($_SESSION['pcategoria']=="SI")
-                {
-                	if($categoria['cod']==$_SESSION['cat_padre_activa'])
-                    {
-                        
-                        $subcategorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod_padre=" . $_SESSION['cat_padre_activa'] . " AND activa='S'");
-                        
-                		while($subcategoria=mysqli_fetch_array($subcategorias))
-                		{
-?>
-          <tr> 
-            <td height="18" valign="top"><p><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $subcategoria['cod'];?>"><strong><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
+                
+                <div class="col-lg-12 col-sm-12 col-12" style="padding-left: 2.6rem;">
+                    <?php if($p_cat !=''){ ?>
+              <strong><font color="#0000CC" size="3"> 
+                <?php echo $p_cat.'-';?></font></strong>
+                
+                <?php } ?>
+               <strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="#"> 
+              <?php echo $cat_title['nombre'];?></a></font></strong>
+                    </div>
+                
+                 
+                
+                </div>
+             
+             
+             
+             <div class="row" id="slide_toogle" style="display:none;">
+                 
+                 <div class="col-lg-12 col-sm-12 col-12" style="margin-bottom:10px">
+                         <form name="form1" method="post"  action="shop_productos.php" style="padding-left: 2rem;">
+                   <label class="search_field"> 
+                        <input name="criterio" style="border:1px solid #0d6efd;" type="text" id="textfield" class="form-control"    maxlength="20">
+                    </label>
+                    <input type="submit" name="Submit2" value="buscar"  class="btn btn-primary"> 
+                </form>
+                    </div>
+             <?php
+                    while ($categoria = mysqli_fetch_array($categorias)) {
+                ?>
+                 <div class="col-6 col-lg-4 col-sm-6">
+                     
+                     <?php
+                      $count = 0;
+                    //if ($_SESSION['pcategoria'] == "SI" && $categoria['cod'] == $_SESSION['cat_padre_activa']) {
+                  $subcategorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod_padre=" . $categoria['cod'] . " AND activa='S'");
+                  while ($subcategoria = mysqli_fetch_array($subcategorias)) {
+                      
+                      $count =  count($subcategoria);
+                ?>
+                
+                <?php 
+                  }
+                    //}
+                ?>
+                     
+                     <ul>
+                         <li>
+                             
+                             <a style="text-decoration:none;color:#666666!important;cursor:pointer;" <?php if($count ==0 ){ ?> href="shop_productos.php?cod_cat=<?php echo $categoria['cod']; ?>" <?php }else{ ?> onclick="parent('<?php echo $categoria['cod']; ?>')"<?php } ?>>
+                                 <?php echo $categoria['nombre']; ?>
+                                  <?php if($count !=0 ){ ?>
+                                 <svg xmlns="http://www.w3.org/2000/svg" style="float: right;" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+  <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+</svg>
+<?php } ?>
+                                 <ul <?php if($count !=0 ){ ?> style="padding:0px;" <?php } ?>>
+                                     <?php
+                    //if ($_SESSION['pcategoria'] == "SI" && $categoria['cod'] == $_SESSION['cat_padre_activa']) {
+                  $subcategorias = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod_padre=" . $categoria['cod'] . " AND activa='S'");
+                  while ($subcategoria = mysqli_fetch_array($subcategorias)) {
+                ?>
+                                     
+                                     
+                                    <li class="cat_child_<?php echo $categoria['cod']; ?>" style="display:none;background: #F3F3F8;padding:10px;">
+                                        <a style="text-decoration:none;color:#666666!important;" href="shop_productos.php?cod_cat=<?php echo $subcategoria['cod']; ?>">
+                                            <?php
+                                                echo $subcategoria['nombre'];
+                                            ?>
+                                            
+                                            </a>
+                                    </li>
+                                    
+                                    <?php 
+                                    }
+                    //}
+                                    ?>
+                                 </ul>
+                             
+                             
+                             </a>
+                         </li>
+                     </ul>
+                     
+                     
+                
+                    
+                    
+                    
+               
+                
+                    </div>
                 <?php
-                            echo $subcategoria['nombre'];
-    ?>
-                </font></strong></a></p></td>
-          </tr>
-          <?php
-         				}
-                 	  }
-                   }
-	}
-	mysqli_data_seek($categorias,0);
-	
-?>
-        </table></td>
-      <td width="601" valign="top"><!-- InstanceBeginEditable name="EditRegion3" -->
-<?php	
+                
+          }
+          mysqli_data_seek($categorias, 0);
+          ?>
+          
+          
+         
+             </div>
+             </div>
+         </div>
+         
+          <div class="col-lg-12">
+              
+              <?php	
 	$cantidad=mysqli_num_rows($categorias);
 	if(!isset($_SESSION['nro_pagina']) or isset($_GET['cod_cat']))
 	{
@@ -285,64 +498,48 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
 		//mysql_data_seek($productos,5);	
 	}		
 ?>      
-      <table width="100%" border="0" cellpadding="0" cellspacing="0">
-          <!--DWLayoutTable-->
-          <tr> 
-            <td width="419" height="31" valign="top"><strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop.php">inicio</a></font></strong></td>
-          </tr>
-     </table>
-<?php
+              <?php
 	if($cantidad_productos>0)
 	{
-?>                
-     <table width="577" border="0" cellpadding="0" cellspacing="0">
-          <!--DWLayoutTable-->
-          <tr> 
-           <?php
-	//$mostrados=0;	
-	for($mostrados=0;$mostrados<3;$mostrados++)
-	//while($producto=mysql_fetch_array($productos) and $mostrados<3)
-	{
-		if($producto=mysqli_fetch_array($productos))
-		{
-			//Esta cuenta la cantidad de productos mostrados POR PAGINA
-			//$mostrados++;	
-			//Esta variable contabiliza el total de productos mostrados EN TOTAL
-			//$_SESSION['productos_mostrados']=$_SESSION['productos_mostrados']+1;
-?>
-            	<td><a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<?php echo $producto['foto'];?>" /></a></td>        
-<?php
-		}
-	}	
-?>
-          </tr>
-          <tr> 
-<?php
-	//if($_SESSION['productos_mostrados']<$cantidad_productos)
-	//{		
-		//mysql_data_seek($productos,(($_SESSION['nro_pagina']*6)-6)+3);
+?> 
+           <div class="row">
+               <?php 
+                    for($mostrados=0;$mostrados<3;$mostrados++){
+                        if($producto=mysqli_fetch_array($productos)){
+               ?>
+               
+               
+               <div class="col-lg-4 col-12 col-sm-6">
+                    <div  class="p_list box_layout">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>">
+                      <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
+                    </a>
+                    </div>
+                </div>
+               
+               <?php 
+                        }
+               } ?>
+               
+               <?php
+	
 		while($producto=mysqli_fetch_array($productos) and $mostrados<6)
 		{
 			$mostrados++;			
-			//$_SESSION['productos_mostrados']=$_SESSION['productos_mostrados']+1;
-?>
-            <td><a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>"><img width="190" height="190" border="0" src="<?php echo $producto['foto'];?>" /></a></td>
-<?php
-		}	
-	//}	
-?>
-          </tr>
-          <tr>
-            <td>
-              <div align="left" style="margin-top:20px;margin-bottom:20px;">
-                <table width="179" border="0" cellspacing="0">
-                  <tr>
-                    <td width="22"><center>
-                      <a style="text-decoration:none" href="shop_productos.php?accion=1"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>&lt;&lt;</strong></font></a>
-                    </center>                    </td>
-                    <td width="131"><center>
-                      <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
-<?php
+		?>
+               <div class="col-lg-4 col-12 col-sm-6">
+                    <div  class="p_list box_layout">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $_SESSION['cat_padre_activa'];?>">
+                      <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
+                    </a>
+                    </div>
+                </div>
+               <?php 
+		}
+               ?>
+               
+                <div class="col-lg-12 col-12 col-sm-12" style="text-align:center;margin-top:20px;margin-bottom:20px;">
+               <?php
 	for($h=1;$h<=$cantidad_paginas;$h++)
 	{
 	    
@@ -361,10 +558,10 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
     padding: 5px;
     margin: 5px;';
 	    }else{
-	        $style='text-decoration:none;background: blue;
+	        $style='text-decoration:none;background: #0d6efd;
     color: #fff;
     padding: 5px;
-    margin: 5px;';
+    margin: 5px;width:25px;';
 	    }
 	    
 	    if(isset($_GET['pag'])){
@@ -374,7 +571,7 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
 	            $style='text-decoration:none;background: green;
     color: #fff;
     padding: 5px;
-    margin: 5px;';
+    margin: 5px;width:25px;';
 	        }
 	    }
 	    
@@ -389,19 +586,12 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
 		}
 	}
 ?>
-                        </font>
-                    </center>                    </td>
-                    <td width="20"><center>
-                      <a style="text-decoration:none" href="shop_productos.php?accion=2"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>&gt;&gt;</strong></font></a>
-                    </center>                    </td>
-                  </tr>
-                                  </table>
-            </div></td>
-          </tr>
-        </table>
-        <center>
-          <?php
+                </div>
+              </div>
+          
+           <?php
 	}
+	
 	else
 	{
 ?>        
@@ -409,45 +599,55 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
           <img src="archivos_recibidos/no_disponible.jpg" width="190" height="190">    
 <?php
 	}
-?>             
-          </center>
-        <!-- InstanceEndEditable --></td>
-      <td width="172" valign="top"><img src="marcas.gif" width="169" height="377" border="0" usemap="#Map" /></td>
-    </tr>
-    <tr> 
-      <td height="32" colspan="3" background="fondopie2.png"><div align="center"><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><strong>GRAVITAL 
-          BOARD HOUSE ® | Rafael Nu&ntilde;ez 3491 | Cerro de las Rosas | Cordoba 
-          | Argentina<br>
-          0351-5988630 | gravital@boardhouse.com.ar</strong></font></div></td>
-    </tr>
-  </table>
-</div>
+?>  
+              
+              
+        </div>
+         
+         
+        </div>
+        
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div  style="background:url('../shop/fondopie2.png');text-align:center;">
+                <strong style="font-size: 12px;">
+                GRAVITAL BOARD HOUSE &copy; | Rafael Nu&nacute;ez 3491 | Cerro de las Rosas | Cordoba | Argentina<br>
+                0351-5988630 | gravital@boardhouse.com.ar
+              </strong>
+              </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+    
+    
 
-<map name="Map"><area shape="rect" coords="5,7,110,26" href="shop_productos.php?marca=10">
-  <area shape="circle" coords="146,23,21" href="shop_productos.php?marca=11">
-  <area shape="rect" coords="11,32,105,56" href="shop_productos.php?marca=4">
-  <area shape="rect" coords="8,61,51,110" href="shop_productos.php?marca=5">
-  <area shape="rect" coords="62,58,115,112" href="shop_productos.php?marca=17">
-  <area shape="rect" coords="123,63,164,102" href="shop_productos.php?marca=8">
-  <area shape="rect" coords="8,123,101,158" href="shop_productos.php?marca=6">
-  <area shape="rect" coords="7,168,79,193" href="shop_productos.php?marca=15">
-  <area shape="rect" coords="4,201,88,217" href="shop_productos.php?marca=7">
-  <area shape="rect" coords="98,203,164,246" href="shop_productos.php?marca=3">
-  <area shape="rect" coords="3,223,56,296" href="shop_productos.php?marca=1">
-  <area shape="rect" coords="130,317,164,372" href="shop_productos.php?marca=9">
-  <area shape="rect" coords="79,320,122,369" href="shop_productos.php?marca=16">
-  <area shape="rect" coords="2,306,67,333" href="shop_productos.php?marca=18">
-  <area shape="rect" coords="63,253,165,278" href="shop_productos.php?marca=20">
-  <area shape="rect" coords="1,341,70,370" href="shop_productos.php?marca=2">
-  <area shape="rect" coords="75,281,162,309" href="shop_productos.php?marca=19">
-</map>
-<map name="Map2">
-  <area shape="rect" coords="10,129,57,147" href="shop.php">
-  <area shape="rect" coords="855,0,911,18" href="shop_contacto.php">
-  <area shape="rect" coords="763,0,840,19" href="shop_comollegar.php">
-  <area shape="rect" coords="653,0,745,18" href="shop_comocomprar.php">
-  <area shape="rect" coords="119,1,173,19" href="shop_horarios.php">
-  <area shape="rect" coords="14,0,105,17" href="shop_quienessomos.php">
-</map>
+
+
+<script>
+$(document).ready(function(){
+  $(".slide_down_tag").click(function(){
+    $("#slide_toogle").slideDown("slow");
+    $(".slide_down_tag").hide();
+    $(".slide_up_tag").show();
+  });
+  
+  $(".slide_up_tag").click(function(){
+    $("#slide_toogle").slideUp("slow");
+    $(".slide_up_tag").hide();
+    $(".slide_down_tag").show();
+  });
+});
+
+
+function parent(id){
+   
+      $(".cat_child_"+id).slideToggle();
+
+}
+</script>
 </body>
 <!-- InstanceEnd --></html>
