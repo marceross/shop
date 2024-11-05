@@ -27,6 +27,9 @@ $categorias_padre = mysqli_query($mysqli, "SELECT * FROM categorias WHERE cod=" 
 }else if(isset($_POST['criterio'])){
 			
 
+}else if(isset($_GET['marca'])){
+
+    
 }else{
     header("Location:shop.php");
     exit();
@@ -161,11 +164,11 @@ text-align: center;
              
              <div class="row" >
                 <div class="col-lg-8 col-sm-8 col-8">
-                    <ul>
+                    <ul style="margin-bottom:0px!important">
                         
                         
-                        <li><h4>Productos</h4></li>
-                        <li><p style="margin-bottom:0px!important;padding-left: 20px;"><strong><a class="btn btn-info btn-sm" style="text-decoration:none;color:#fff" href="shop.php">inicio</a></strong></p>
+                        
+                        <li><p style="margin-bottom:0px!important;"><strong><a class="btn btn-info btn-sm" style="text-decoration:none;color:#fff" href="shop.php">inicio</a></strong></p>
 </li>
                     </ul>
                     
@@ -194,51 +197,22 @@ text-align: center;
                                 </div>
                     
                     
-                <?php 
-                    
-                    
-                    if(isset($_GET['cod_cat'])){
-                        
-                   
-                    
-                    
-                    $cate_t=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod'");
-                    $cat_title = mysqli_fetch_array($cate_t);
-                    
-                    $c_p = $cat_title['cod_padre'];
-                    
-                    if($c_p !=0){
-                    
-                    $cate_m=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$c_p'");
-                    
-                    //echo "SELECT * FROM categorias WHERE cod='$c_p'";
-                    
-                    $cat_mtitle = mysqli_fetch_array($cate_m);
-                    $p_cat = $cat_mtitle['nombre'];
-                        
-                    }else{
-                        $p_cat = '';
-                    }
-                    
-                ?>
                 
-                <div class="col-lg-12 col-sm-12 col-12" style="padding-left: 2.6rem;">
-                    <?php if($p_cat !=''){ ?>
-              <strong><font color="#0000CC" size="3"> 
-                <?php echo $p_cat.'-';?></font></strong>
-                
-                <?php } ?>
-               <strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="#"> 
-              <?php echo $cat_title['nombre'];?></a></font></strong>
-                    </div>
-                
-                 <?php } ?>
                 
                 </div>
              
              
              
-             <div class="row" id="slide_toogle" style="display:none;">
+              <div class="row" id="slide_toogle" style="display:none;margin-top:10px">
+                  
+                  
+                  
+                  
+                
+                
+                
+                
+                  
                  
                  <div class="col-lg-12 col-sm-12 col-12" style="margin-bottom:10px">
                          <form name="form1" method="post"  action="shop_productos.php" style="padding-left: 2rem;">
@@ -325,6 +299,62 @@ text-align: center;
              </div>
          </div>
          
+         
+        
+         
+         
+         
+         <div class="col-lg-12" style="padding-left: 54px!important;padding-bottom:10px!important;">
+                             <strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop.php">inicio 
+                      </a></font></strong>
+                      
+                      <?php 
+                    
+                    
+                    if(isset($_GET['cod_cat'])){
+                        
+                        $cod = $_GET['cod_cat'];
+                    
+                    
+                    $cate_t=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$cod'");
+                    $cat_title = mysqli_fetch_array($cate_t);
+                    
+                    $c_p = $cat_title['cod_padre'];
+                    
+                    if($c_p !=0){
+                    
+                    $cate_m=mysqli_query($mysqli,"SELECT * FROM categorias WHERE cod='$c_p'");
+                    
+                    //echo "SELECT * FROM categorias WHERE cod='$c_p'";
+                    
+                    $cat_mtitle = mysqli_fetch_array($cate_m);
+                    $p_cat = $cat_mtitle['nombre'];
+                        
+                    }else{
+                        $p_cat = '';
+                    }
+                    
+                ?>
+                      
+                      
+                       <?php if($p_cat !=''){ ?>
+              <strong><font color="#0000CC" size="3"> 
+                <a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $cat_mtitle['cod']; ?>"> - <?php echo $p_cat;?></a></font></strong>
+                
+                <?php } ?>
+                
+               <strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop_productos.php?cod_cat=<?php echo $cat_title['cod']; ?>"> 
+              - <?php echo $cat_title['nombre'];?></a></font></strong>
+              
+               <?php }else if(isset($_POST['criterio'])){ ?>
+               <strong><font color="#490360" size="3"> 
+                <a style="text-decoration:none;color:#490360!important;" href="#"> - Search - <?php echo $_POST['criterio'];?></a></font></strong>
+               <?php } ?>
+                 </div>
+                 
+                 
+                 
+        
           <div class="col-lg-12">
               
               <?php	
@@ -517,7 +547,7 @@ text-align: center;
                
                <div class="col-lg-4 col-12 col-sm-6">
                     <div  class="p_list box_layout">
-                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $cod;?>">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $producto['cod_cat'];?>">
                       <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
                     </a>
                     </div>
@@ -535,7 +565,7 @@ text-align: center;
 		?>
                <div class="col-lg-4 col-12 col-sm-6">
                     <div  class="p_list box_layout">
-                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $cod;?>">
+                    <a href="shop_detalle.php?cod=<?php echo $producto['cod'];?>&cod_cat=<?php echo $producto['cod_cat'];?>">
                       <img  style="padding:10px;text-align:center;margin: 0 auto;display: block;" border="0" src="<?php echo $producto['foto'];?>" />
                     </a>
                     </div>

@@ -144,9 +144,9 @@ text-align: center;
              
              <div class="row" >
                 <div class="col-lg-8 col-sm-8 col-8">
-                    <ul>
-                        <li><h4>Productos</h4></li>
-                        <li><p style="margin-bottom:0px!important;padding-left: 20px;"><strong><a class="btn btn-info btn-sm" style="text-decoration:none;color:#fff" href="shop.php">inicio</a></strong></p>
+                    <ul style="margin-bottom:0px!important">
+                        
+                        <li><p style="margin-bottom:0px!important;"><strong><a class="btn btn-info btn-sm" style="text-decoration:none;color:#fff" href="shop.php">inicio</a></strong></p>
 </li>
                     </ul>
                     
@@ -185,7 +185,7 @@ text-align: center;
              
              
              
-             <div class="row" id="slide_toogle" style="display:none;">
+             <div class="row" id="slide_toogle" style="display:none;margin-top:10px">
                  
                  <div class="col-lg-12 col-sm-12 col-12" style="margin-bottom:10px">
                          <form name="form1" method="post"  action="shop_productos.php" style="padding-left: 2rem;">
@@ -272,6 +272,13 @@ text-align: center;
              </div>
          </div>
             </div>
+            
+            
+            <div class="col-lg-12" style="padding-left: 45px!important;padding-bottom:8px!important;">
+                             <strong><font size="3" face="Arial, Helvetica, sans-serif"><a style="text-decoration:none" href="shop.php">inicio 
+                      </a></font></strong>
+                 </div>
+            
            
             <div class="col-lg-12 col-sm-12">
                 
